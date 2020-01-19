@@ -1,16 +1,1 @@
-import 'package:rsa_identification/rsa_identification.dart';
-import 'package:test/test.dart';
-
-void main() {
-  group('A group of tests', () {
-    Awesome awesome;
-
-    setUp(() {
-      awesome = Awesome();
-    });
-
-    test('First Test', () {
-      expect(awesome.isAwesome, isTrue);
-    });
-  });
-}
+void main() {}
