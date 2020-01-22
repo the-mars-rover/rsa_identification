@@ -25,11 +25,8 @@ abstract class IdDocument {
   /// The birth date of the person to whom this document belongs.
   final DateTime birthDate;
 
-  /// The date on which this license was issued.
-  final DateTime issueDate;
-
   const IdDocument(this.idNumber, this.firstNames, this.surname, this.gender,
-      this.birthDate, this.issueDate);
+      this.birthDate);
 
   /// Returns an `IdDocument` instance from the bytes read from the
   /// barcode of the document.
@@ -59,18 +56,21 @@ class SmartId extends IdDocument {
   /// The citizenship status of the person to whom this document belongs.
   final String citizenshipStatus;
 
+  /// The date on which this license was issued.
+  final DateTime issueDate;
+
   const SmartId._SmartId(
       String idNumber,
       String firstNames,
       String surname,
       String gender,
       DateTime birthDate,
-      DateTime issueDate,
+      this.issueDate,
       this.smartIdNumber,
       this.nationality,
       this.countryOfBirth,
       this.citizenshipStatus)
-      : super(idNumber, firstNames, surname, gender, birthDate, issueDate);
+      : super(idNumber, firstNames, surname, gender, birthDate);
 
   /// Returns a `SmartId` instance from the bytes read from the
   /// barcode of the ID.
@@ -136,8 +136,13 @@ class DriversLicense extends IdDocument {
   /// The type of the ID number. '02' represents a South African ID number.
   final String idNumberType;
 
-  /// The driver restriction codes placed on this license.
-  final List<String> driverRestrictions;
+  /// A string representing driver restriction codes placed on this license.
+  ///
+  /// 00 = none
+  /// 10 = glasses
+  /// 20 = artificial limb
+  /// 12 = glasses and artificial limb
+  final String driverRestrictions;
 
   /// The expiry date of the PrDP Permit.
   final DateTime prdpExpiry;
@@ -151,6 +156,10 @@ class DriversLicense extends IdDocument {
   /// The date to which this license is valid.
   final DateTime validTo;
 
+  /// The issue date for each license code. Normally contains a date for each
+  /// vehicleCode in [vehicleCodes].
+  List<DateTime> issueDates;
+
   /// The image data of the photo on this license in bytes.
   ///
   /// TODO: Determine how this data can be decoded to provide an actual image.
@@ -162,7 +171,7 @@ class DriversLicense extends IdDocument {
       String surname,
       String gender,
       DateTime birthDate,
-      DateTime issueDate,
+      this.issueDates,
       this.licenseNumber,
       this.vehicleCodes,
       this.prdpCode,
@@ -176,7 +185,7 @@ class DriversLicense extends IdDocument {
       this.validFrom,
       this.validTo,
       this.imageData)
-      : super(idNumber, firstNames, surname, gender, birthDate, issueDate);
+      : super(idNumber, firstNames, surname, gender, birthDate);
 
   /// Returns a `DriversLicense` instance from the bytes read from the
   /// barcode of the DriversLicense.
@@ -185,8 +194,6 @@ class DriversLicense extends IdDocument {
   /// - https://mybroadband.co.za/forum/threads/decode-drivers-licence-barcode.382187/
   /// - https://github.com/ugommirikwe/sa-license-decoder/blob/master/SPEC.md
   /// - https://stackoverflow.com/questions/17549231/decode-south-african-za-drivers-license
-  ///
-  /// TODO: Complete the rest of this section
   factory DriversLicense.fromBytes(Uint8List bytes) {
 //    bytes = DriversLicenseDecoder().decodeDrivers(bytes);
     var section1 = bytes.sublist(10, 10 + bytes[5]);
@@ -194,28 +201,32 @@ class DriversLicense extends IdDocument {
     var section3 = bytes.sublist(
         10 + bytes[5] + bytes[7], 10 + bytes[5] + bytes[7] + bytes[9]);
 
-    var section1Strings = _getSection1Strings(section1);
-    var section2String = _getSection2AsString(section2);
+    var section1Values = _getSection1Values(section1);
+    var section2Values = _getSection2Values(section2);
 
-    var idNumber = section1Strings[14];
-    var firstNames = section1Strings[5];
-    var surname = section1Strings[4];
+    var idNumber = section1Values[14];
+    var firstNames = section1Values[5];
+    var surname = section1Values[4];
     var gender;
-    var birthDate;
-    var issueDate;
-    var licenseNumber = section1Strings[13];
-    var vehicleCodes = section1Strings.sublist(0, 4);
-    var prdpCode = section1Strings[6];
-    var idCountryOfIssue = section1Strings[7];
-    var licenseCountryOfIssue = section1Strings[8];
-    var vehicleRestrictions = section1Strings.sublist(9, 13);
-    var idNumberType;
-    var driverRestrictions;
-    var prdpExpiry;
-    var licenseIssueNumber;
-    var validFrom;
-    var validTo;
-    var imageData;
+    section2Values[11] == '01' ? gender = 'M' : gender = 'F';
+    var birthDate = section2Values[8];
+    var issueDates = List<DateTime>.from(section2Values.sublist(1, 5));
+    issueDates.removeWhere((date) => date == null);
+    var licenseNumber = section1Values[13];
+    var vehicleCodes = section1Values.sublist(0, 4);
+    vehicleCodes.removeWhere((code) => code.isEmpty);
+    var prdpCode = section1Values[6];
+    var idCountryOfIssue = section1Values[7];
+    var licenseCountryOfIssue = section1Values[8];
+    var vehicleRestrictions = section1Values.sublist(9, 13);
+    vehicleRestrictions.removeWhere((code) => code.isEmpty);
+    var idNumberType = section2Values[0];
+    var driverRestrictions = section2Values[5];
+    var prdpExpiry = section2Values[6];
+    var licenseIssueNumber = section2Values[7];
+    var validFrom = section2Values[9];
+    var validTo = section2Values[10];
+    var imageData = section3;
 
     return DriversLicense._DriversLicense(
         idNumber,
@@ -223,7 +234,7 @@ class DriversLicense extends IdDocument {
         surname,
         gender,
         birthDate,
-        issueDate,
+        issueDates,
         licenseNumber,
         vehicleCodes,
         prdpCode,
@@ -239,7 +250,7 @@ class DriversLicense extends IdDocument {
         imageData);
   }
 
-  static List<String> _getSection1Strings(Uint8List bytes) {
+  static List<String> _getSection1Values(Uint8List bytes) {
     var values = <String>[];
     var prevDeliminator;
     while (values.length < 14) {
@@ -265,16 +276,53 @@ class DriversLicense extends IdDocument {
     return values;
   }
 
-  static String _getSection2AsString(Uint8List bytes) {
-    var hexList = bytes.map((byte) => byte.toRadixString(16)).toList();
-    var result = '';
-    hexList.forEach((hex) => result = result + hex);
-    return result;
+  static List<dynamic> _getSection2Values(Uint8List bytes) {
+    var hexList = bytes.map((byte) {
+      var hex = byte.toRadixString(16);
+      if (hex.length == 1) {
+        hex = '0' + hex;
+      }
+      return hex;
+    }).toList();
+    var nibbleString = '';
+    hexList.forEach((hex) => nibbleString = nibbleString + hex);
+
+    var values = [];
+    while (values.length < 12) {
+      if (values.isEmpty ||
+          values.length == 5 ||
+          values.length == 7 ||
+          values.length == 11) {
+        //2 nibbles
+        values.add(nibbleString.substring(0, 2));
+        nibbleString = nibbleString.substring(2);
+        continue;
+      }
+
+      if (values.length == 1 ||
+          values.length == 2 ||
+          values.length == 3 ||
+          values.length == 4 ||
+          values.length == 6 ||
+          values.length == 8 ||
+          values.length == 9 ||
+          values.length == 10) {
+        if (nibbleString.substring(0, 1) == 'a') {
+          // 1 nibble
+          values.add(null);
+          nibbleString = nibbleString.substring(1);
+        } else {
+          // 8 nibbles
+          var year = int.parse(nibbleString.substring(0, 4));
+          var month = int.parse(nibbleString.substring(4, 6));
+          var day = int.parse(nibbleString.substring(6, 8));
+          values.add(DateTime(year, month, day));
+          nibbleString = nibbleString.substring(8);
+        }
+        continue;
+      }
+    }
+
+    return values;
   }
 }
-
-/// remaining=[43,31,e1,e1,e1,53,4d,49,54,48,e0,...] | values=[] | prevDeliminator = null
-/// remaining=[e1,e1,53,4d,49,54,48,e0,...] | values=['C1'] | prevDeliminator = 225
-/// remaining=[e1,53,4d,49,54,48,e0,...] | values=['C1', ''] | prevDeliminator = 225
-/// remaining=[53,4d,49,54,48,e0,...] | values=['C1', '', ''] | prevDeliminator = 225
-/// remaining=[...] | values=['C1', '', '', '', 'SMITH'] | prevDeliminator = 224
