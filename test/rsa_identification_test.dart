@@ -5,6 +5,32 @@ import 'package:rsa_identification/rsa_identification.dart';
 import 'package:test/test.dart';
 
 void main() {
+  group('IdDocument', () {
+    test('fromBytes instantiates object accurately when passing valid smart ID bytes',
+            () {
+          Uint8List validBytes = utf8.encode(
+              'SURNAME|NAME|GENDER|NATIONALITY|ID NUMBER|29 Jul 2000|COUNTRY OF BIRTH|CITIZENSHIP STATUS|26 Jan 2017|23370|SMART ID NUMBER|1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890');
+          var smartId = IdDocument.fromBytes(validBytes);
+
+          expect(smartId is SmartId, true);
+          expect(smartId.surname, 'SURNAME');
+          expect(smartId.firstNames, 'NAME');
+          expect(smartId.gender, 'GENDER');
+          expect(smartId.idNumber, 'ID NUMBER');
+          expect(smartId.birthDate, DateTime(2000, 7, 29));
+        });
+
+    test('fromBytes throws FormatException when passing invalid bytes', () {
+      Uint8List invalidBytes = utf8.encode(
+          'SURNAME|NAME|GENDER|NATIONALITY|29 Jul 2000|COUNTRY OF BIRTH|CITIZENSHIP STATUS|26 Jan 2017|23370|SMART ID NUMBER|1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890');
+      try {
+        SmartId.fromBytes(invalidBytes);
+      } catch (e) {
+        expect(e, isFormatException);
+      }
+    });
+  });
+
   group('SmartId', () {
     test('fromBytes instantiates object accurately when passing valid bytes',
         () {

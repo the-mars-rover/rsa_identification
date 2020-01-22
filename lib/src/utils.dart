@@ -73,12 +73,12 @@ sYU+aRX4RmoF
     var sequence = _parseSequence(rows);
     var modulus = (sequence.elements[0] as ASN1Integer).valueAsBigInteger;
     var exponent = (sequence.elements[1] as ASN1Integer).valueAsBigInteger;
-    var decrypted = [];
-    decrypted.addAll(_encryptValue(block1, exponent, modulus, 128));
-    decrypted.addAll(_encryptValue(block2, exponent, modulus, 128));
-    decrypted.addAll(_encryptValue(block3, exponent, modulus, 128));
-    decrypted.addAll(_encryptValue(block4, exponent, modulus, 128));
-    decrypted.addAll(_encryptValue(block5, exponent, modulus, 128));
+    var decrypted = <int>[];
+    decrypted.addAll(_encryptValue(block1, exponent, modulus, 128).sublist(5));
+    decrypted.addAll(_encryptValue(block2, exponent, modulus, 128).sublist(5));
+    decrypted.addAll(_encryptValue(block3, exponent, modulus, 128).sublist(5));
+    decrypted.addAll(_encryptValue(block4, exponent, modulus, 128).sublist(5));
+    decrypted.addAll(_encryptValue(block5, exponent, modulus, 128).sublist(5));
 
     key = '''-----BEGIN RSA PUBLIC KEY-----
 MF8CSwC0BKDfEdHKz/GhoEjU1XP5U6YsWD10klknVhpteh4rFAQlJq9wtVBUc5Dq
@@ -91,7 +91,7 @@ Kw==
     exponent = (sequence.elements[1] as ASN1Integer).valueAsBigInteger;
     decrypted.addAll(_encryptValue(block6, exponent, modulus, 74));
 
-    return decrypted;
+    return Uint8List.fromList(decrypted);
   }
 
   Uint8List _encryptValue(Uint8List rgb, BigInt e, BigInt n, int size) {

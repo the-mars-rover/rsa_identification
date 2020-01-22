@@ -30,14 +30,16 @@ abstract class IdDocument {
 
   /// Returns an `IdDocument` instance from the bytes read from the
   /// barcode of the document.
-  ///
-  /// TODO: Implement the logic for this constructor.
   factory IdDocument.fromBytes(Uint8List bytes) {
-    if (bytes.sublist(0, 4) == [1, 155, 9, 45]) {
+    try {
       return DriversLicense.fromBytes(bytes);
-    }
+    } catch (e) {}
 
-    return SmartId.fromBytes(bytes);
+    try {
+      return SmartId.fromBytes(bytes);
+    } catch (e) {}
+
+    throw FormatException('License type is not supported.');
   }
 }
 
@@ -195,59 +197,64 @@ class DriversLicense extends IdDocument {
   /// - https://github.com/ugommirikwe/sa-license-decoder/blob/master/SPEC.md
   /// - https://stackoverflow.com/questions/17549231/decode-south-african-za-drivers-license
   factory DriversLicense.fromBytes(Uint8List bytes) {
-//    bytes = DriversLicenseDecoder().decodeDrivers(bytes);
-    var section1 = bytes.sublist(10, 10 + bytes[5]);
-    var section2 = bytes.sublist(10 + bytes[5], 10 + bytes[5] + bytes[7]);
-    var section3 = bytes.sublist(
-        10 + bytes[5] + bytes[7], 10 + bytes[5] + bytes[7] + bytes[9]);
+    try {
+      bytes = DriversLicenseDecoder().decodeDrivers(bytes);
+      var section1 = bytes.sublist(10, 10 + bytes[5]);
+      var section2 = bytes.sublist(10 + bytes[5], 10 + bytes[5] + bytes[7]);
+      var section3 = bytes.sublist(
+          10 + bytes[5] + bytes[7], 10 + bytes[5] + bytes[7] + bytes[9]);
 
-    var section1Values = _getSection1Values(section1);
-    var section2Values = _getSection2Values(section2);
+      var section1Values = _getSection1Values(section1);
+      var section2Values = _getSection2Values(section2);
 
-    var idNumber = section1Values[14];
-    var firstNames = section1Values[5];
-    var surname = section1Values[4];
-    var gender;
-    section2Values[11] == '01' ? gender = 'M' : gender = 'F';
-    var birthDate = section2Values[8];
-    var issueDates = List<DateTime>.from(section2Values.sublist(1, 5));
-    issueDates.removeWhere((date) => date == null);
-    var licenseNumber = section1Values[13];
-    var vehicleCodes = section1Values.sublist(0, 4);
-    vehicleCodes.removeWhere((code) => code.isEmpty);
-    var prdpCode = section1Values[6];
-    var idCountryOfIssue = section1Values[7];
-    var licenseCountryOfIssue = section1Values[8];
-    var vehicleRestrictions = section1Values.sublist(9, 13);
-    vehicleRestrictions.removeWhere((code) => code.isEmpty);
-    var idNumberType = section2Values[0];
-    var driverRestrictions = section2Values[5];
-    var prdpExpiry = section2Values[6];
-    var licenseIssueNumber = section2Values[7];
-    var validFrom = section2Values[9];
-    var validTo = section2Values[10];
-    var imageData = section3;
+      var idNumber = section1Values[14];
+      var firstNames = section1Values[5];
+      var surname = section1Values[4];
+      var gender;
+      section2Values[11] == '01' ? gender = 'M' : gender = 'F';
+      var birthDate = section2Values[8];
+      var issueDates = List<DateTime>.from(section2Values.sublist(1, 5));
+      issueDates.removeWhere((date) => date == null);
+      var licenseNumber = section1Values[13];
+      var vehicleCodes = section1Values.sublist(0, 4);
+      vehicleCodes.removeWhere((code) => code.isEmpty);
+      var prdpCode = section1Values[6];
+      var idCountryOfIssue = section1Values[7];
+      var licenseCountryOfIssue = section1Values[8];
+      var vehicleRestrictions = section1Values.sublist(9, 13);
+      vehicleRestrictions.removeWhere((code) => code.isEmpty);
+      var idNumberType = section2Values[0];
+      var driverRestrictions = section2Values[5];
+      var prdpExpiry = section2Values[6];
+      var licenseIssueNumber = section2Values[7];
+      var validFrom = section2Values[9];
+      var validTo = section2Values[10];
+      var imageData = section3;
 
-    return DriversLicense._DriversLicense(
-        idNumber,
-        firstNames,
-        surname,
-        gender,
-        birthDate,
-        issueDates,
-        licenseNumber,
-        vehicleCodes,
-        prdpCode,
-        idCountryOfIssue,
-        licenseCountryOfIssue,
-        vehicleRestrictions,
-        idNumberType,
-        driverRestrictions,
-        prdpExpiry,
-        licenseIssueNumber,
-        validFrom,
-        validTo,
-        imageData);
+      return DriversLicense._DriversLicense(
+          idNumber,
+          firstNames,
+          surname,
+          gender,
+          birthDate,
+          issueDates,
+          licenseNumber,
+          vehicleCodes,
+          prdpCode,
+          idCountryOfIssue,
+          licenseCountryOfIssue,
+          vehicleRestrictions,
+          idNumberType,
+          driverRestrictions,
+          prdpExpiry,
+          licenseIssueNumber,
+          validFrom,
+          validTo,
+          imageData);
+    } catch (e) {
+      throw FormatException(
+          'Could not instantiate Drivers License from bytes: $e');
+    }
   }
 
   static List<String> _getSection1Values(Uint8List bytes) {
