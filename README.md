@@ -1,8 +1,11 @@
 A Dart Library for decoding and providing South African identification details from documents
 such as Driver's licenses and Smart ID's.
 
-Created from templates made available by Stagehand under a BSD-style
-[license](https://github.com/dart-lang/stagehand/blob/master/LICENSE).
+## Supported Documents
+* [x] Driver's Licenses
+* [x] Smart ID Documents
+* [ ] Passports
+* [ ] Old ID Books
 
 ## Usage
 
