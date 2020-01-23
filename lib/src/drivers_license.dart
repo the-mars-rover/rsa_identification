@@ -83,7 +83,7 @@ class DriversLicense extends IdDocument {
   /// Returns a `DriversLicense` instance from the bytes read from the
   /// barcode of the DriversLicense.
   ///
-  /// IMPORTANT: that [bytes] is the RAW bytes from the barcode. Some barcode
+  /// IMPORTANT: [bytes] is the RAW bytes from the barcode. Some barcode
   /// scanner plugins expose the String of the barcode which has been decoded using
   /// UTF encoding - this corrupts the raw bytes when encoding the string to bytes again.
   /// Try to use a barcode scanner which exposes the raw bytes directly (ie. before
