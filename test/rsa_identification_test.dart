@@ -5,7 +5,7 @@ import 'package:rsa_identification/rsa_identification.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('SmartId', () {
+  group('IdCard', () {
     test(
         'fromBarcodeString instantiates object accurately when passing valid barcodeString',
         () {
@@ -34,7 +34,39 @@ void main() {
       } catch (e) {
         expect(e, isFormatException);
         expect(
-          e.message.startsWith('Could not instantiate Smart ID from bytes'),
+          e.message.startsWith(
+              'Could not instantiate Smart ID from given barcode String'),
+          isTrue,
+        );
+      }
+    });
+  });
+
+  group('IdBook', () {
+    test(
+        'fromIdNumber instantiates object accurately when passing a valid ID Number',
+        () {
+      final barcodeString = '8208114800080';
+      var idBook = IdBook.fromIdNumber(barcodeString);
+
+      expect(idBook.idNumber, '8208114800080');
+      expect(idBook.birthDate, DateTime(1982, 8, 11));
+      expect(idBook.gender, 'F');
+      expect(idBook.citizenshipStatus, 'SA Citizen');
+    });
+
+    test(
+        'fromIdNumber throws FormatException when passing an invalid ID Number',
+        () {
+      final barcodeString = '8208114800081'; // check digit is invalid
+      try {
+        IdBook.fromIdNumber(barcodeString);
+      } catch (e) {
+        expect(e, isFormatException);
+        expect(
+          e.message.startsWith(
+            'Could not instantiate ID Book from given ID Number',
+          ),
           isTrue,
         );
       }
