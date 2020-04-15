@@ -3,10 +3,27 @@ import 'dart:typed_data';
 
 import 'package:asn1lib/asn1lib.dart';
 
-import 'id_document.dart';
-
 /// A South African Driver's License. Includes all the details of the license.
-class DriversLicense extends IdDocument {
+class DriversLicense {
+  /// The ID Number of the person to whom this document belongs.
+  final String idNumber;
+
+  /// The first names of the person to whom this document belongs.
+  ///
+  /// May only contain initials if first names are not available.
+  final String firstNames;
+
+  /// The last name of the person to whom this document belongs.
+  final String surname;
+
+  /// The text representing gender of the person to whom this document belongs.
+  ///
+  /// 'M' and 'F' represent Male and Female.
+  final String gender;
+
+  /// The birth date of the person to whom this document belongs.
+  final DateTime birthDate;
+
   /// The license number of this license.
   final String licenseNumber;
 
@@ -59,11 +76,11 @@ class DriversLicense extends IdDocument {
   final Uint8List imageData;
 
   DriversLicense._DriversLicense(
-      String idNumber,
-      String firstNames,
-      String surname,
-      String gender,
-      DateTime birthDate,
+      this.idNumber,
+      this.firstNames,
+      this.surname,
+      this.gender,
+      this.birthDate,
       this.issueDates,
       this.licenseNumber,
       this.vehicleCodes,
@@ -77,8 +94,7 @@ class DriversLicense extends IdDocument {
       this.licenseIssueNumber,
       this.validFrom,
       this.validTo,
-      this.imageData)
-      : super(idNumber, firstNames, surname, gender, birthDate);
+      this.imageData);
 
   /// Returns a `DriversLicense` instance from the bytes read from the
   /// barcode of the DriversLicense.
@@ -301,16 +317,16 @@ Kw==
       var sequence = _parseSequence(rows);
       var modulus = (sequence.elements[0] as ASN1Integer).valueAsBigInteger;
       var exponent = (sequence.elements[1] as ASN1Integer).valueAsBigInteger;
-      decrypted.addAll(
-          _encryptValue(block1, exponent, modulus, 128).sublist(5));
-      decrypted.addAll(
-          _encryptValue(block2, exponent, modulus, 128).sublist(5));
-      decrypted.addAll(
-          _encryptValue(block3, exponent, modulus, 128).sublist(5));
-      decrypted.addAll(
-          _encryptValue(block4, exponent, modulus, 128).sublist(5));
-      decrypted.addAll(
-          _encryptValue(block5, exponent, modulus, 128).sublist(5));
+      decrypted
+          .addAll(_encryptValue(block1, exponent, modulus, 128).sublist(5));
+      decrypted
+          .addAll(_encryptValue(block2, exponent, modulus, 128).sublist(5));
+      decrypted
+          .addAll(_encryptValue(block3, exponent, modulus, 128).sublist(5));
+      decrypted
+          .addAll(_encryptValue(block4, exponent, modulus, 128).sublist(5));
+      decrypted
+          .addAll(_encryptValue(block5, exponent, modulus, 128).sublist(5));
 
       // decode last block of 74 and add to decrypted.
       rows = key74.split(RegExp(r'\r\n?|\n'));
