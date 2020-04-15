@@ -6,11 +6,12 @@ import 'package:test/test.dart';
 
 void main() {
   group('SmartId', () {
-    test('fromBytes instantiates object accurately when passing valid bytes',
+    test(
+        'fromBarcodeString instantiates object accurately when passing valid barcodeString',
         () {
-      Uint8List validBytes = utf8.encode(
-          'SURNAME|NAME|GENDER|NATIONALITY|ID NUMBER|29 Jul 2000|COUNTRY OF BIRTH|CITIZENSHIP STATUS|26 Jan 2017|23370|SMART ID NUMBER|1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890');
-      var smartId = IdCard.fromBarcodeBytes(validBytes);
+      final barcodeString =
+          'SURNAME|NAME|GENDER|NATIONALITY|ID NUMBER|29 Jul 2000|COUNTRY OF BIRTH|CITIZENSHIP STATUS|26 Jan 2017|23370|SMART ID NUMBER|1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890';
+      var smartId = IdCard.fromBarcodeString(barcodeString);
 
       expect(smartId.surname, 'SURNAME');
       expect(smartId.firstNames, 'NAME');
@@ -24,10 +25,12 @@ void main() {
       expect(smartId.smartIdNumber, 'SMART ID NUMBER');
     });
 
-    test('fromBytes throws FormatException when passing invalid bytes', () {
-      Uint8List invalidBytes = utf8.encode('some invalid bytes');
+    test(
+        'fromBarcodeString throws FormatException when passing invalid barcodeString',
+        () {
+      final barcodeString = 'some invalid bytes';
       try {
-        IdCard.fromBarcodeBytes(invalidBytes);
+        IdCard.fromBarcodeString(barcodeString);
       } catch (e) {
         expect(e, isFormatException);
         expect(

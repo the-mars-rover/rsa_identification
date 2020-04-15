@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:typed_data';
-
 /// A South African Smart ID Card. Includes all the details of the Smart ID.
 class IdCard {
   /// The ID Number of the person to whom this document belongs.
@@ -39,7 +36,7 @@ class IdCard {
   /// The date on which this license was issued.
   final DateTime issueDate;
 
-  const IdCard._SmartId(
+  const IdCard._IdCard(
       this.idNumber,
       this.firstNames,
       this.surname,
@@ -51,17 +48,16 @@ class IdCard {
       this.countryOfBirth,
       this.citizenshipStatus);
 
-  /// Returns a `SmartId` instance from the bytes read from the
+  /// Returns a `SmartId` instance from the String read from the
   /// barcode of the ID.
   ///
-  /// The bytes after being decoding using UTF-8 encoding, are expected to be in
-  /// the following format:
+  /// The barcodeString is  expected to be in the following format:
   /// SURNAME|NAME|GENDER|NATIONALITY|ID NUMBER|BIRTH DATE|COUNTRY OF BIRTH|CITIZENSHIP STATUS|ISSUE DATE|23370|SMART ID NUMBER|1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
   ///
-  /// If the format above is not adhered to an exception will be thrown.
-  factory IdCard.fromBarcodeBytes(Uint8List bytes) {
+  /// If the format above is not adhered to an a [FormatException] will be thrown.
+  factory IdCard.fromBarcodeString(String barcodeString) {
     try {
-      var fields = utf8.decode(bytes).split('|');
+      var fields = barcodeString.split('|');
 
       var surname = fields[0];
       var firstNames = fields[1];
@@ -74,7 +70,7 @@ class IdCard {
       var issueDate = _dateFromShortString(fields[8]);
       var smartIdNumber = fields[10];
 
-      return IdCard._SmartId(
+      return IdCard._IdCard(
         idNumber,
         firstNames,
         surname,
@@ -87,7 +83,7 @@ class IdCard {
         citizenshipStatus,
       );
     } catch (e) {
-      throw FormatException('Could not instantiate Smart ID from bytes: $e');
+      throw FormatException('Could not instantiate Smart ID from given barcode String: $e');
     }
   }
 
