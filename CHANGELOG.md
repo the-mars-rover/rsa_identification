@@ -1,3 +1,6 @@
+## 1.0.0
+- Production Ready Release
+
 ## 0.2.0
 BREAKING CHANGES
 
