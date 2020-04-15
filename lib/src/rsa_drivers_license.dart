@@ -5,7 +5,7 @@ import 'package:meta/meta.dart';
 import 'package:asn1lib/asn1lib.dart';
 
 /// A South African Driver's License. Includes all the details of the license.
-class DriversLicense {
+class RsaDriversLicense {
   /// The ID Number of the person to whom this document belongs.
   final String idNumber;
 
@@ -76,7 +76,7 @@ class DriversLicense {
   /// TODO: Determine how this data can be decoded to provide an actual image.
   final Uint8List imageData;
 
-  const DriversLicense({
+  const RsaDriversLicense({
     @required this.idNumber,
     @required this.firstNames,
     @required this.surname,
@@ -111,7 +111,7 @@ class DriversLicense {
   /// - https://mybroadband.co.za/forum/threads/decode-drivers-licence-barcode.382187/
   /// - https://github.com/ugommirikwe/sa-license-decoder/blob/master/SPEC.md
   /// - https://stackoverflow.com/questions/17549231/decode-south-african-za-drivers-license
-  factory DriversLicense.fromBarcodeBytes(Uint8List bytes) {
+  factory RsaDriversLicense.fromBarcodeBytes(Uint8List bytes) {
     try {
       bytes = _decodeDrivers(bytes);
       var section1 = bytes.sublist(10, 10 + bytes[5]);
@@ -146,7 +146,7 @@ class DriversLicense {
       var validTo = section2Values[10];
       var imageData = section3;
 
-      return DriversLicense(
+      return RsaDriversLicense(
         idNumber: idNumber,
         firstNames: firstNames,
         surname: surname,

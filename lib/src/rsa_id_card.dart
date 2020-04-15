@@ -1,7 +1,7 @@
 import 'package:meta/meta.dart';
 
 /// A South African Smart ID Card. Includes all the details of the Smart ID.
-class IdCard {
+class RsaIdCard {
   /// The ID Number of the person to whom this document belongs.
   final String idNumber;
 
@@ -38,7 +38,7 @@ class IdCard {
   /// The date on which this license was issued.
   final DateTime issueDate;
 
-  const IdCard({
+  const RsaIdCard({
     @required this.idNumber,
     @required this.firstNames,
     @required this.surname,
@@ -58,7 +58,7 @@ class IdCard {
   /// SURNAME|NAME|GENDER|NATIONALITY|ID NUMBER|BIRTH DATE|COUNTRY OF BIRTH|CITIZENSHIP STATUS|ISSUE DATE|23370|SMART ID NUMBER|1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
   ///
   /// If the format above is not adhered to an a [FormatException] will be thrown.
-  factory IdCard.fromBarcodeString(String barcodeString) {
+  factory RsaIdCard.fromBarcodeString(String barcodeString) {
     try {
       var fields = barcodeString.split('|');
 
@@ -73,7 +73,7 @@ class IdCard {
       var issueDate = _dateFromShortString(fields[8]);
       var smartIdNumber = fields[10];
 
-      return IdCard(
+      return RsaIdCard(
         idNumber: idNumber,
         firstNames: firstNames,
         surname: surname,

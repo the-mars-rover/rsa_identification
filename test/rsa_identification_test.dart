@@ -11,7 +11,7 @@ void main() {
         () {
       final barcodeString =
           'SURNAME|NAME|GENDER|NATIONALITY|ID NUMBER|29 Jul 2000|COUNTRY OF BIRTH|CITIZENSHIP STATUS|26 Jan 2017|23370|SMART ID NUMBER|1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890';
-      var smartId = IdCard.fromBarcodeString(barcodeString);
+      var smartId = RsaIdCard.fromBarcodeString(barcodeString);
 
       expect(smartId.surname, 'SURNAME');
       expect(smartId.firstNames, 'NAME');
@@ -30,7 +30,7 @@ void main() {
         () {
       final barcodeString = 'some invalid bytes';
       try {
-        IdCard.fromBarcodeString(barcodeString);
+        RsaIdCard.fromBarcodeString(barcodeString);
       } catch (e) {
         expect(e, isFormatException);
         expect(
@@ -47,7 +47,7 @@ void main() {
         'fromIdNumber instantiates object accurately when passing a valid ID Number',
         () {
       final barcodeString = '8208114800080';
-      var idBook = IdBook.fromIdNumber(barcodeString);
+      var idBook = RsaIdBook.fromIdNumber(barcodeString);
 
       expect(idBook.idNumber, '8208114800080');
       expect(idBook.birthDate, DateTime(1982, 8, 11));
@@ -60,7 +60,7 @@ void main() {
         () {
       final barcodeString = '8208114800081'; // check digit is invalid
       try {
-        IdBook.fromIdNumber(barcodeString);
+        RsaIdBook.fromIdNumber(barcodeString);
       } catch (e) {
         expect(e, isFormatException);
         expect(
@@ -77,7 +77,7 @@ void main() {
     test('fromBytes throws FormatException when passing invalid bytes', () {
       Uint8List invalidBytes = utf8.encode('some invalid bytes');
       try {
-        DriversLicense.fromBarcodeBytes(invalidBytes);
+        RsaDriversLicense.fromBarcodeBytes(invalidBytes);
       } catch (e) {
         expect(e, isFormatException);
         expect(

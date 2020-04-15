@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
 
-class IdBook {
+class RsaIdBook {
   /// The ID Number of the person to whom this document belongs.
   final String idNumber;
 
@@ -17,7 +17,7 @@ class IdBook {
   /// Will be either 'SA Citizen' or 'Permanent Resident'.
   final String citizenshipStatus;
 
-  const IdBook({
+  const RsaIdBook({
     @required this.idNumber,
     @required this.gender,
     @required this.birthDate,
@@ -31,14 +31,14 @@ class IdBook {
   /// See https://mybroadband.co.za/news/government/176895-what-your-south-african-id-number-reveals-about-you.html.
   ///
   /// If the format above is not adhered to a [FormatException] will be thrown.
-  factory IdBook.fromIdNumber(String idNumber) {
+  factory RsaIdBook.fromIdNumber(String idNumber) {
     try {
       _validateIdNumber(idNumber);
       final dateOfBirth = _dateOfBirth(idNumber);
       final gender = _gender(idNumber);
       final citizenshipStatus = _citizenshipStatus(idNumber);
 
-      return IdBook(
+      return RsaIdBook(
         idNumber: idNumber,
         gender: gender,
         birthDate: dateOfBirth,
@@ -50,7 +50,7 @@ class IdBook {
     }
   }
 
-  /// A helper method for [IdBook.fromIdNumber] - validates the given ID number
+  /// A helper method for [RsaIdBook.fromIdNumber] - validates the given ID number
   /// and throws a [FormatException] if the ID number is not valid.
   ///
   /// See http://geekswithblogs.net/willemf/archive/2005/10/30/58561.aspx
@@ -88,7 +88,7 @@ class IdBook {
     }
   }
 
-  /// A helper method for [IdBook.fromIdNumber] - returns the birth date associated
+  /// A helper method for [RsaIdBook.fromIdNumber] - returns the birth date associated
   /// with the given ID number.
   static DateTime _dateOfBirth(String idNumber) {
     final yy = idNumber.substring(0, 2);
@@ -104,7 +104,7 @@ class IdBook {
     return DateTime.parse(yearPrefix + yy + mm + dd);
   }
 
-  /// A helper method for [IdBook.fromIdNumber] - returns the gender associated
+  /// A helper method for [RsaIdBook.fromIdNumber] - returns the gender associated
   /// with the given ID number.
   static String _gender(String idNumber) {
     final genderFlag = int.parse(idNumber.substring(6, 7));
@@ -112,7 +112,7 @@ class IdBook {
     return genderFlag < 5 ? 'F' : 'M';
   }
 
-  /// A helper method for [IdBook.fromIdNumber] - returns the citizenship associated
+  /// A helper method for [RsaIdBook.fromIdNumber] - returns the citizenship associated
   /// with the given ID number.
   static String _citizenshipStatus(String idNumber) {
     final residentFlag = int.parse(idNumber.substring(10, 11));
