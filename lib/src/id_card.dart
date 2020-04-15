@@ -83,7 +83,8 @@ class IdCard {
         citizenshipStatus,
       );
     } catch (e) {
-      throw FormatException('Could not instantiate Smart ID from given barcode String: $e');
+      throw FormatException(
+          'Could not instantiate Smart ID from given barcode String: $e');
     }
   }
 
