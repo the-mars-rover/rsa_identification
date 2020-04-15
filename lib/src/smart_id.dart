@@ -1,10 +1,27 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'id_document.dart';
+/// A South African Smart ID Card. Includes all the details of the Smart ID.
+class SmartId {
+  /// The ID Number of the person to whom this document belongs.
+  final String idNumber;
 
-/// A South African Driver's License. Includes all the details of the smart ID.
-class SmartId extends IdDocument {
+  /// The first names of the person to whom this document belongs.
+  ///
+  /// May only contain initials if first names are not available.
+  final String firstNames;
+
+  /// The last name of the person to whom this document belongs.
+  final String surname;
+
+  /// The text representing gender of the person to whom this document belongs.
+  ///
+  /// 'M' and 'F' represent Male and Female.
+  final String gender;
+
+  /// The birth date of the person to whom this document belongs.
+  final DateTime birthDate;
+
   /// The number of this smart ID.
   final String smartIdNumber;
 
@@ -23,17 +40,16 @@ class SmartId extends IdDocument {
   final DateTime issueDate;
 
   const SmartId._SmartId(
-      String idNumber,
-      String firstNames,
-      String surname,
-      String gender,
-      DateTime birthDate,
+      this.idNumber,
+      this.firstNames,
+      this.surname,
+      this.gender,
+      this.birthDate,
       this.issueDate,
       this.smartIdNumber,
       this.nationality,
       this.countryOfBirth,
-      this.citizenshipStatus)
-      : super(idNumber, firstNames, surname, gender, birthDate);
+      this.citizenshipStatus);
 
   /// Returns a `SmartId` instance from the bytes read from the
   /// barcode of the ID.
