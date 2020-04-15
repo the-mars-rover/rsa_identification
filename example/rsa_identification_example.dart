@@ -7,7 +7,7 @@ void main() {
   var exampleSmartIdCardBytes = utf8.encode(
       'SURNAME|NAME|GENDER|NATIONALITY|ID NUMBER|29 Jul 2000|COUNTRY OF BIRTH|CITIZENSHIP STATUS|26 Jan 2017|23370|SMART ID NUMBER|1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890');
 
-  var idDocument = SmartId.fromBarcodeBytes(exampleSmartIdCardBytes);
+  var idDocument = IdCard.fromBarcodeBytes(exampleSmartIdCardBytes);
   print('First Names: ${idDocument.firstNames}');
   print('Last Name: ${idDocument.surname}');
   print('ID Number: ${idDocument.idNumber}');

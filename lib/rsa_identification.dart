@@ -4,4 +4,4 @@
 library rsa_identification;
 
 export 'src/drivers_license.dart';
-export 'src/smart_id.dart';
+export 'src/id_card.dart';

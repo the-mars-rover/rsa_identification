@@ -10,7 +10,7 @@ void main() {
         () {
       Uint8List validBytes = utf8.encode(
           'SURNAME|NAME|GENDER|NATIONALITY|ID NUMBER|29 Jul 2000|COUNTRY OF BIRTH|CITIZENSHIP STATUS|26 Jan 2017|23370|SMART ID NUMBER|1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890');
-      var smartId = SmartId.fromBarcodeBytes(validBytes);
+      var smartId = IdCard.fromBarcodeBytes(validBytes);
 
       expect(smartId.surname, 'SURNAME');
       expect(smartId.firstNames, 'NAME');
@@ -27,7 +27,7 @@ void main() {
     test('fromBytes throws FormatException when passing invalid bytes', () {
       Uint8List invalidBytes = utf8.encode('some invalid bytes');
       try {
-        SmartId.fromBarcodeBytes(invalidBytes);
+        IdCard.fromBarcodeBytes(invalidBytes);
       } catch (e) {
         expect(e, isFormatException);
         expect(

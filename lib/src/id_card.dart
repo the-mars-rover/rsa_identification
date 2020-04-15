@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 /// A South African Smart ID Card. Includes all the details of the Smart ID.
-class SmartId {
+class IdCard {
   /// The ID Number of the person to whom this document belongs.
   final String idNumber;
 
@@ -39,7 +39,7 @@ class SmartId {
   /// The date on which this license was issued.
   final DateTime issueDate;
 
-  const SmartId._SmartId(
+  const IdCard._SmartId(
       this.idNumber,
       this.firstNames,
       this.surname,
@@ -59,7 +59,7 @@ class SmartId {
   /// SURNAME|NAME|GENDER|NATIONALITY|ID NUMBER|BIRTH DATE|COUNTRY OF BIRTH|CITIZENSHIP STATUS|ISSUE DATE|23370|SMART ID NUMBER|1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
   ///
   /// If the format above is not adhered to an exception will be thrown.
-  factory SmartId.fromBarcodeBytes(Uint8List bytes) {
+  factory IdCard.fromBarcodeBytes(Uint8List bytes) {
     try {
       var fields = utf8.decode(bytes).split('|');
 
@@ -74,7 +74,7 @@ class SmartId {
       var issueDate = _dateFromShortString(fields[8]);
       var smartIdNumber = fields[10];
 
-      return SmartId._SmartId(
+      return IdCard._SmartId(
         idNumber,
         firstNames,
         surname,
