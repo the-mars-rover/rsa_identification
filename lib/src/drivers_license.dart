@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:meta/meta.dart';
 
 import 'package:asn1lib/asn1lib.dart';
 
@@ -68,33 +69,34 @@ class DriversLicense {
 
   /// The issue date for each license code. Normally contains a date for each
   /// vehicleCode in [vehicleCodes].
-  List<DateTime> issueDates;
+  final List<DateTime> issueDates;
 
   /// The image data of the photo on this license in bytes.
   ///
   /// TODO: Determine how this data can be decoded to provide an actual image.
   final Uint8List imageData;
 
-  DriversLicense._DriversLicense(
-      this.idNumber,
-      this.firstNames,
-      this.surname,
-      this.gender,
-      this.birthDate,
-      this.issueDates,
-      this.licenseNumber,
-      this.vehicleCodes,
-      this.prdpCode,
-      this.idCountryOfIssue,
-      this.licenseCountryOfIssue,
-      this.vehicleRestrictions,
-      this.idNumberType,
-      this.driverRestrictions,
-      this.prdpExpiry,
-      this.licenseIssueNumber,
-      this.validFrom,
-      this.validTo,
-      this.imageData);
+  const DriversLicense({
+    @required this.idNumber,
+    @required this.firstNames,
+    @required this.surname,
+    @required this.gender,
+    @required this.birthDate,
+    @required this.issueDates,
+    @required this.licenseNumber,
+    @required this.vehicleCodes,
+    @required this.prdpCode,
+    @required this.idCountryOfIssue,
+    @required this.licenseCountryOfIssue,
+    @required this.vehicleRestrictions,
+    @required this.idNumberType,
+    @required this.driverRestrictions,
+    @required this.prdpExpiry,
+    @required this.licenseIssueNumber,
+    @required this.validFrom,
+    @required this.validTo,
+    @required this.imageData,
+  });
 
   /// Returns a `DriversLicense` instance from the bytes read from the
   /// barcode of the DriversLicense.
@@ -144,26 +146,27 @@ class DriversLicense {
       var validTo = section2Values[10];
       var imageData = section3;
 
-      return DriversLicense._DriversLicense(
-          idNumber,
-          firstNames,
-          surname,
-          gender,
-          birthDate,
-          issueDates,
-          licenseNumber,
-          vehicleCodes,
-          prdpCode,
-          idCountryOfIssue,
-          licenseCountryOfIssue,
-          vehicleRestrictions,
-          idNumberType,
-          driverRestrictions,
-          prdpExpiry,
-          licenseIssueNumber,
-          validFrom,
-          validTo,
-          imageData);
+      return DriversLicense(
+        idNumber: idNumber,
+        firstNames: firstNames,
+        surname: surname,
+        gender: gender,
+        birthDate: birthDate,
+        issueDates: issueDates,
+        licenseNumber: licenseNumber,
+        vehicleCodes: vehicleCodes,
+        prdpCode: prdpCode,
+        idCountryOfIssue: idCountryOfIssue,
+        licenseCountryOfIssue: licenseCountryOfIssue,
+        vehicleRestrictions: vehicleRestrictions,
+        idNumberType: idNumberType,
+        driverRestrictions: driverRestrictions,
+        prdpExpiry: prdpExpiry,
+        licenseIssueNumber: licenseIssueNumber,
+        validFrom: validFrom,
+        validTo: validTo,
+        imageData: imageData,
+      );
     } catch (e) {
       throw FormatException(
           'Could not instantiate Drivers License from bytes: $e');

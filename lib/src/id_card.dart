@@ -1,3 +1,5 @@
+import 'package:meta/meta.dart';
+
 /// A South African Smart ID Card. Includes all the details of the Smart ID.
 class IdCard {
   /// The ID Number of the person to whom this document belongs.
@@ -36,17 +38,18 @@ class IdCard {
   /// The date on which this license was issued.
   final DateTime issueDate;
 
-  const IdCard._IdCard(
-      this.idNumber,
-      this.firstNames,
-      this.surname,
-      this.gender,
-      this.birthDate,
-      this.issueDate,
-      this.smartIdNumber,
-      this.nationality,
-      this.countryOfBirth,
-      this.citizenshipStatus);
+  const IdCard({
+    @required this.idNumber,
+    @required this.firstNames,
+    @required this.surname,
+    @required this.gender,
+    @required this.birthDate,
+    @required this.issueDate,
+    @required this.smartIdNumber,
+    @required this.nationality,
+    @required this.countryOfBirth,
+    @required this.citizenshipStatus,
+  });
 
   /// Returns a `SmartId` instance from the String read from the
   /// barcode of the ID.
@@ -70,17 +73,17 @@ class IdCard {
       var issueDate = _dateFromShortString(fields[8]);
       var smartIdNumber = fields[10];
 
-      return IdCard._IdCard(
-        idNumber,
-        firstNames,
-        surname,
-        gender,
-        birthDate,
-        issueDate,
-        smartIdNumber,
-        nationality,
-        countryOfBirth,
-        citizenshipStatus,
+      return IdCard(
+        idNumber: idNumber,
+        firstNames: firstNames,
+        surname: surname,
+        gender: gender,
+        birthDate: birthDate,
+        issueDate: issueDate,
+        smartIdNumber: smartIdNumber,
+        nationality: nationality,
+        countryOfBirth: countryOfBirth,
+        citizenshipStatus: citizenshipStatus,
       );
     } catch (e) {
       throw FormatException(

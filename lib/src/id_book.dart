@@ -1,3 +1,5 @@
+import 'package:meta/meta.dart';
+
 class IdBook {
   /// The ID Number of the person to whom this document belongs.
   final String idNumber;
@@ -15,8 +17,12 @@ class IdBook {
   /// Will be either 'SA Citizen' or 'Permanent Resident'.
   final String citizenshipStatus;
 
-  const IdBook._IdBook(
-      this.idNumber, this.gender, this.birthDate, this.citizenshipStatus);
+  const IdBook({
+    @required this.idNumber,
+    @required this.gender,
+    @required this.birthDate,
+    @required this.citizenshipStatus,
+  });
 
   /// Returns an `IdBook` instance from the ID Number of an ID Book, which can be read from
   /// the barcode of the ID Book.
@@ -32,7 +38,12 @@ class IdBook {
       final gender = _gender(idNumber);
       final citizenshipStatus = _citizenshipStatus(idNumber);
 
-      return IdBook._IdBook(idNumber, gender, dateOfBirth, citizenshipStatus);
+      return IdBook(
+        idNumber: idNumber,
+        gender: gender,
+        birthDate: dateOfBirth,
+        citizenshipStatus: citizenshipStatus,
+      );
     } catch (e) {
       throw FormatException(
           'Could not instantiate ID Book from given ID Number: $e');
