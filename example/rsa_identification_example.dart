@@ -8,7 +8,7 @@ void main() {
   print('ID Card - Last Name: ${idCard.surname}');
   print('ID Card - ID Number: ${idCard.idNumber}');
 
-  final idBookBarcode = '9609145016083';
+  final idBookBarcode = '8109124800088';
   final idBook = RsaIdBook.fromIdNumber(idBookBarcode);
   print('ID Book - Date of Birth: ${idBook.birthDate}');
   print('ID Book - Gender: ${idBook.gender}');
