@@ -4,8 +4,7 @@ such as Driver's licenses and Smart ID's.
 ## Supported Documents
 * [x] Driver's Licenses
 * [x] Smart ID Documents
-* [ ] Passports
-* [ ] Old ID Books
+* [x] Old ID Books
 
 ## Usage
 
