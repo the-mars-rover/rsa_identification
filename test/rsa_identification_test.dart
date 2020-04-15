@@ -46,7 +46,8 @@ void main() {
       } catch (e) {
         expect(e, isFormatException);
         expect(
-          e.message.startsWith('Could not instantiate Drivers License from bytes'),
+          e.message
+              .startsWith('Could not instantiate Drivers License from bytes'),
           isTrue,
         );
       }
