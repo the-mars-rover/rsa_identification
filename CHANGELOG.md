@@ -1,3 +1,6 @@
+## 1.0.1
+- Introduced RsaIdDocument as interface for all documents
+
 ## 1.0.0
 - Production Ready Release
 
