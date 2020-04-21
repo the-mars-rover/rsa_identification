@@ -1,6 +1,8 @@
 import 'package:meta/meta.dart';
 
-class RsaIdBook {
+import '../rsa_identification.dart';
+
+class RsaIdBook implements RsaIdDocument {
   /// The ID Number of the person to whom this document belongs.
   final String idNumber;
 

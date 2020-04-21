@@ -1,7 +1,9 @@
 import 'package:meta/meta.dart';
 
+import '../rsa_identification.dart';
+
 /// A South African Smart ID Card. Includes all the details of the Smart ID.
-class RsaIdCard {
+class RsaIdCard implements RsaIdDocument {
   /// The ID Number of the person to whom this document belongs.
   final String idNumber;
 

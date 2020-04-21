@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:meta/meta.dart';
 
 import 'package:asn1lib/asn1lib.dart';
+import 'package:meta/meta.dart';
+
+import '../rsa_identification.dart';
 
 /// A South African Driver's License. Includes all the details of the license.
-class RsaDriversLicense {
+class RsaDriversLicense implements RsaIdDocument {
   /// The ID Number of the person to whom this document belongs.
   final String idNumber;
 
