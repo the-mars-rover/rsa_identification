@@ -1,3 +1,5 @@
+![Dart CI](https://github.com/Born-Pty-Ltd/rsa_identification/workflows/Dart%20CI/badge.svg)
+
 A Dart Library for decoding and providing South African identification details from documents
 such as Driver's licenses and Smart ID's.
 
