@@ -1,3 +1,6 @@
+## 1.0.2
+- Updated README file
+
 ## 1.0.1
 - Introduced RsaIdDocument as interface for all documents
 
