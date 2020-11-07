@@ -11,6 +11,7 @@
 <!-- PROJECT SHIELDS -->
 <p align="center">
 <a href="https://pub.dev/packages/rsa_identification"><img src="https://img.shields.io/pub/v/rsa_identification" alt="pub"></a>
+<a href="https://github.com/born-ideas/rsa_identification/actions?query=workflow%3Atest"><img src="https://img.shields.io/github/workflow/status/born-ideas/rsa_identification/test?label=test" alt="test"></a>
 <a href="https://github.com/born-ideas/rsa_identification/issues"><img src="https://img.shields.io/github/issues/born-ideas/rsa_identification" alt="issues"></a>
 <a href="https://github.com/born-ideas/rsa_identification/network"><img src="https://img.shields.io/github/forks/born-ideas/rsa_identification" alt="forks"></a>
 <a href="https://github.com/born-ideas/rsa_identification/stargazers"><img src="https://img.shields.io/github/stars/born-ideas/rsa_identification" alt="stars"></a>
