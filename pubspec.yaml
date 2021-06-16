@@ -1,15 +1,17 @@
 name: rsa_identification
 description: A Dart Library for decoding and providing South African identification details from documents such as Driver's licenses and Smart ID's.
-version: 1.0.3
+version: 2.0.0
 homepage: https://github.com/born-ideas/rsa_identification
 
 environment:
-  sdk: '>=2.7.0 <3.0.0'
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
-  asn1lib: ^0.8.1
-  meta: ^1.2.3
+  asn1lib: ^1.0.2
+  freezed_annotation: ^0.14.2
 
 dev_dependencies:
-  pedantic: ^1.8.0
-  test: ^1.6.0
+  pedantic: ^1.11.0
+  test: ^1.17.7
+  freezed: ^0.14.2
+  build_runner: ^2.0.4

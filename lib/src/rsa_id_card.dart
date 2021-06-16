@@ -1,5 +1,3 @@
-import 'package:meta/meta.dart';
-
 import '../rsa_identification.dart';
 
 /// A South African Smart ID Card. Includes all the details of the Smart ID.
@@ -41,16 +39,16 @@ class RsaIdCard implements RsaIdDocument {
   final DateTime issueDate;
 
   const RsaIdCard({
-    @required this.idNumber,
-    @required this.firstNames,
-    @required this.surname,
-    @required this.gender,
-    @required this.birthDate,
-    @required this.issueDate,
-    @required this.smartIdNumber,
-    @required this.nationality,
-    @required this.countryOfBirth,
-    @required this.citizenshipStatus,
+    required this.idNumber,
+    required this.firstNames,
+    required this.surname,
+    required this.gender,
+    required this.birthDate,
+    required this.issueDate,
+    required this.smartIdNumber,
+    required this.nationality,
+    required this.countryOfBirth,
+    required this.citizenshipStatus,
   });
 
   /// Returns a `SmartId` instance from the String read from the

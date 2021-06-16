@@ -1,5 +1,6 @@
-## 1.0.3
-- Updated to newer versions of meta and asn1lib
+## 2.0.0
+- Updated dependencies
+- Added Null Safety
 
 ## 1.0.2
 - Updated README file

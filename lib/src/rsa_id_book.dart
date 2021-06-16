@@ -1,5 +1,3 @@
-import 'package:meta/meta.dart';
-
 import '../rsa_identification.dart';
 
 class RsaIdBook implements RsaIdDocument {
@@ -20,10 +18,10 @@ class RsaIdBook implements RsaIdDocument {
   final String citizenshipStatus;
 
   const RsaIdBook({
-    @required this.idNumber,
-    @required this.gender,
-    @required this.birthDate,
-    @required this.citizenshipStatus,
+    required this.idNumber,
+    required this.gender,
+    required this.birthDate,
+    required this.citizenshipStatus,
   });
 
   /// Returns an `IdBook` instance from the ID Number of an ID Book, which can be read from

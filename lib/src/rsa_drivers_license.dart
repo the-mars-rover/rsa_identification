@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:asn1lib/asn1lib.dart';
-import 'package:meta/meta.dart';
 
 import '../rsa_identification.dart';
 
@@ -79,25 +78,25 @@ class RsaDriversLicense implements RsaIdDocument {
   final Uint8List imageData;
 
   const RsaDriversLicense({
-    @required this.idNumber,
-    @required this.firstNames,
-    @required this.surname,
-    @required this.gender,
-    @required this.birthDate,
-    @required this.issueDates,
-    @required this.licenseNumber,
-    @required this.vehicleCodes,
-    @required this.prdpCode,
-    @required this.idCountryOfIssue,
-    @required this.licenseCountryOfIssue,
-    @required this.vehicleRestrictions,
-    @required this.idNumberType,
-    @required this.driverRestrictions,
-    @required this.prdpExpiry,
-    @required this.licenseIssueNumber,
-    @required this.validFrom,
-    @required this.validTo,
-    @required this.imageData,
+    required this.idNumber,
+    required this.firstNames,
+    required this.surname,
+    required this.gender,
+    required this.birthDate,
+    required this.issueDates,
+    required this.licenseNumber,
+    required this.vehicleCodes,
+    required this.prdpCode,
+    required this.idCountryOfIssue,
+    required this.licenseCountryOfIssue,
+    required this.vehicleRestrictions,
+    required this.idNumberType,
+    required this.driverRestrictions,
+    required this.prdpExpiry,
+    required this.licenseIssueNumber,
+    required this.validFrom,
+    required this.validTo,
+    required this.imageData,
   });
 
   /// Returns a `DriversLicense` instance from the bytes read from the
@@ -130,7 +129,7 @@ class RsaDriversLicense implements RsaIdDocument {
       var gender;
       section2Values[11] == '01' ? gender = 'M' : gender = 'F';
       var birthDate = section2Values[8];
-      var issueDates = List<DateTime>.from(section2Values.sublist(1, 5));
+      var issueDates = List<DateTime?>.from(section2Values.sublist(1, 5));
       issueDates.removeWhere((date) => date == null);
       var licenseNumber = section1Values[13];
       var vehicleCodes = section1Values.sublist(0, 4);
@@ -154,7 +153,7 @@ class RsaDriversLicense implements RsaIdDocument {
         surname: surname,
         gender: gender,
         birthDate: birthDate,
-        issueDates: issueDates,
+        issueDates: issueDates.cast(),
         licenseNumber: licenseNumber,
         vehicleCodes: vehicleCodes,
         prdpCode: prdpCode,
@@ -320,8 +319,8 @@ Kw==
       // decode first 5 blocks and add to decrypted.
       var rows = key128.split(RegExp(r'\r\n?|\n'));
       var sequence = _parseSequence(rows);
-      var modulus = (sequence.elements[0] as ASN1Integer).valueAsBigInteger;
-      var exponent = (sequence.elements[1] as ASN1Integer).valueAsBigInteger;
+      var modulus = (sequence.elements[0] as ASN1Integer).valueAsBigInteger!;
+      var exponent = (sequence.elements[1] as ASN1Integer).valueAsBigInteger!;
       decrypted
           .addAll(_encryptValue(block1, exponent, modulus, 128).sublist(5));
       decrypted
@@ -336,8 +335,8 @@ Kw==
       // decode last block of 74 and add to decrypted.
       rows = key74.split(RegExp(r'\r\n?|\n'));
       sequence = _parseSequence(rows);
-      modulus = (sequence.elements[0] as ASN1Integer).valueAsBigInteger;
-      exponent = (sequence.elements[1] as ASN1Integer).valueAsBigInteger;
+      modulus = (sequence.elements[0] as ASN1Integer).valueAsBigInteger!;
+      exponent = (sequence.elements[1] as ASN1Integer).valueAsBigInteger!;
       decrypted.addAll(_encryptValue(block6, exponent, modulus, 74));
 
       return Uint8List.fromList(decrypted);

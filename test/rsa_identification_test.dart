@@ -33,11 +33,6 @@ void main() {
         RsaIdCard.fromBarcodeString(barcodeString);
       } catch (e) {
         expect(e, isFormatException);
-        expect(
-          e.message.startsWith(
-              'Could not instantiate Smart ID from given barcode String'),
-          isTrue,
-        );
       }
     });
   });
@@ -63,28 +58,17 @@ void main() {
         RsaIdBook.fromIdNumber(barcodeString);
       } catch (e) {
         expect(e, isFormatException);
-        expect(
-          e.message.startsWith(
-            'Could not instantiate ID Book from given ID Number',
-          ),
-          isTrue,
-        );
       }
     });
   });
 
   group('DriversLicense', () {
     test('fromBytes throws FormatException when passing invalid bytes', () {
-      Uint8List invalidBytes = utf8.encode('some invalid bytes');
+      var invalidBytes = Uint8List.fromList(utf8.encode('some invalid bytes'));
       try {
         RsaDriversLicense.fromBarcodeBytes(invalidBytes);
       } catch (e) {
         expect(e, isFormatException);
-        expect(
-          e.message
-              .startsWith('Could not instantiate Drivers License from bytes'),
-          isTrue,
-        );
       }
     });
   });
