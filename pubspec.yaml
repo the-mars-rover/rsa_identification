@@ -8,7 +8,7 @@ environment:
 
 dependencies:
   asn1lib: ^1.0.2
-  freezed_annotation: ^0.14.2
+  freezed_annotation: ^1.1.0
 
 dev_dependencies:
   pedantic: ^1.11.0
