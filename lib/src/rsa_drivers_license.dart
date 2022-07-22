@@ -57,7 +57,7 @@ class RsaDriversLicense implements RsaIdDocument {
   final String driverRestrictions;
 
   /// The expiry date of the PrDP Permit.
-  final DateTime prdpExpiry;
+  final DateTime? prdpExpiry;
 
   /// The issue number of this license.
   final String licenseIssueNumber;
@@ -75,7 +75,7 @@ class RsaDriversLicense implements RsaIdDocument {
   /// The image data of the photo on this license in bytes.
   ///
   /// TODO: Determine how this data can be decoded to provide an actual image.
-  final Uint8List imageData;
+  final Uint8List? imageData;
 
   const RsaDriversLicense({
     required this.idNumber,
